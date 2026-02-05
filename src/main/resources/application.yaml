@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: Hotel Booking API
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotel_booking_db
+    username: matias_dittler
+    password: 0123456789
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8081
+
