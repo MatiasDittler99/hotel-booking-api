@@ -14,7 +14,28 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+  
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
+storage:
+  r2:
+    endpoint: https://0dcc7fc2b6ba52981671208f79024e9f.r2.cloudflarestorage.com
+    access-key: 229783705c2081ef1dd7c6db956fd1c0
+    secret-key: f7083f851a1558cd99f735e38677733462c2fd140aa041140c995f6b5b7639f8
+    bucket: hotel-booking-system
+    region: auto
+    public-url: https://pub-4ecfdd3772564acea4003eb7f4f64d83.r2.dev
+
+# Ejemplo para desppues de la configuracion del cors
+# app:
+#   cors:
+#     allowed-origins: https://mi-frontend.vercel.app
+
+# Despues en render agregar esto:
+# app.cors.allowed-origins=https://mi-frontend.vercel.app
 server:
   port: 8081
 
