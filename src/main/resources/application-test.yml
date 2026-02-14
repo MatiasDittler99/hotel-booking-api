@@ -1,0 +1,62 @@
+# Archivo de configuración para el perfil "test"
+# Se usa al ejecutar tests de integración con Spring Boot
+# Permite levantar una base de datos en memoria, mocks y configuraciones de prueba
+
+spring:
+  config:
+    activate:
+      on-profile: test   # Este archivo se activa solo si el perfil "test" está activo
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    # Base de datos H2 en memoria. No se cierra al finalizar la conexión.
+    driver-class-name: org.h2.Driver  # Driver JDBC para H2
+    username: sa                      # Usuario por defecto de H2
+    password:                         # Contraseña vacía
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      # Crea automáticamente las tablas al iniciar y las elimina al terminar
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        # Dialecto de Hibernate para H2 (para generar SQL compatible)
+
+  h2:
+    console:
+      enabled: true
+      # Habilita la consola web de H2 para inspección manual (opcional)
+
+  servlet:
+    multipart:
+      max-file-size: 100MB        # Tamaño máximo de archivo subido
+      max-request-size: 100MB     # Tamaño máximo de request multipart
+
+jwt:
+  secret: testsecret
+  # Clave secreta usada por JWT para firmar tokens en tests
+  # En producción debería ser diferente y segura
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    # Muestra las consultas SQL que ejecuta Hibernate
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    # Muestra los parámetros que Hibernate pasa a las consultas (bind variables)
+
+storage:
+  r2:
+    endpoint: http://localhost:9000
+    # URL del endpoint de almacenamiento (puede ser MinIO o S3 mock)
+    access-key: test-access
+    secret-key: test-secret
+    bucket: test-bucket
+    region: test
+    public-url: http://localhost:9000/public
+    # Configuración de almacenamiento de objetos para tests (mockeada)
+
+server:
+  port: 8082
+  # Puerto del servidor cuando se levanta con perfil "test"
+  # Evita conflictos con la app real en 8080
