@@ -53,10 +53,12 @@ storage:
     public-url: ${R2_PUBLIC_URL:https://pub-4ecfdd3772564acea4003eb7f4f64d83.r2.dev}
     # URL pública para acceder a archivos del bucket
 
-# # Ejemplo para después de la configuración del CORS
-# # app:
-# #   cors:
-# #     allowed-origins: ${FRONTEND_URL:https://mi-frontend.vercel.app}
+# Ejemplo para después de la configuración del CORS
+# app:
+#   cors:
+#     allowed-origins: 
+#           - ${FRONTEND_PRODUCCION_URL:https://mi-frontend.vercel.app}
+#           - ${FRONTEND_LOCAL_URL:http://localhost:5173}
 
 # # Después en Render agregar esto:
 # # app.cors.allowed-origins=https://mi-frontend.vercel.app
