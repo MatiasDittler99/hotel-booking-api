@@ -10,22 +10,25 @@ spring:
       # Usa la variable de entorno SPRING_PROFILES_ACTIVE si existe
       # Por defecto, "local"
 
+# Configuracion de PostgreSQL en prod (Supabase)
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:hotel_booking_db}
-    # URL de conexión a PostgreSQL
-    # Permite usar variables de entorno para host, puerto y base de datos
-    username: ${POSTGRES_USER:matias_dittler}
-    # Usuario de la base de datos
-    password: ${POSTGRES_PASSWORD:0123456789}
-    # Contraseña de la base de datos
-    driver-class-name: org.postgresql.Driver
-    # Driver JDBC de PostgreSQL
+      url: jdbc:postgresql://${DB_HOST:aws-0-us-west-2.pooler.supabase.com}:${DB_PORT:5432}/${DB_NAME:postgres}?user=${DB_USER:postgres.hysxgnyburidbscgxnuz}&password=${DB_PASSWORD:MatiasDittler_1999}
+      # URL de conexión a PostgreSQL
+      # Permite usar variables de entorno para host, puerto y base de datos
+      username: ${DB_USER:postgres.hysxgnyburidbscgxnuz}
+      # Usuario de la base de datos
+      password: ${DB_PASSWORD:MatiasDittler_1999}
+      # Contraseña de la base de datos
+      driver-class-name: org.postgresql.Driver
+      # Driver JDBC de PostgreSQL
 
   jpa:
     hibernate:
       ddl-auto: update
       # Hibernate actualizará el esquema según las entidades
       # No borra datos existentes
+      #Mostramos la base de datos
+      show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -54,11 +57,11 @@ storage:
     # URL pública para acceder a archivos del bucket
 
 # Ejemplo para después de la configuración del CORS
-# app:
-#   cors:
-#     allowed-origins: 
+app:
+  cors:
+    allowed-origins: 
 #           - ${FRONTEND_PRODUCCION_URL:https://mi-frontend.vercel.app}
-#           - ${FRONTEND_LOCAL_URL:http://localhost:5173}
+          - ${FRONTEND_LOCAL_URL:http://localhost:5173}
 
 # # Después en Render agregar esto:
 # # app.cors.allowed-origins=https://mi-frontend.vercel.app

@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: Hotel Booking API
+    # Nombre de la aplicación Spring Boot
+
+  config:
+    activate:
+      on-profiles: ${SPRING_PROFILES_ACTIVE}
+      # Perfil activo que se cargará
+      # Usa la variable de entorno SPRING_PROFILES_ACTIVE si existe
+      # Por defecto, "local"
+
+# Configuracion de PostgreSQL en local
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:hotel_booking_db}
+    # URL de conexión a PostgreSQL
+    # Permite usar variables de entorno para host, puerto y base de datos
+    username: ${POSTGRES_USER:matias_dittler}
+    # Usuario de la base de datos
+    password: ${POSTGRES_PASSWORD:0123456789}
+    # Contraseña de la base de datos
+    driver-class-name: org.postgresql.Driver
+    # Driver JDBC de PostgreSQL
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # Hibernate actualizará el esquema según las entidades
+      # No borra datos existentes
+      #Mostramos la base de datos
+      show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # Dialecto SQL específico para PostgreSQL
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      # Tamaño máximo permitido por archivo subido
+      max-request-size: 100MB
+      # Tamaño máximo total de request multipart
+
+storage:
+  r2:
+    endpoint: ${R2_ENDPOINT:https://0dcc7fc2b6ba52981671208f79024e9f.r2.cloudflarestorage.com}
+    # Endpoint del servicio de almacenamiento (Cloudflare R2)
+    access-key: ${R2_ACCESS_KEY:229783705c2081ef1dd7c6db956fd1c0}
+    # Access key para R2
+    secret-key: ${R2_SECRET_KEY:f7083f851a1558cd99f735e38677733462c2fd140aa041140c995f6b5b7639f8}
+    # Secret key para R2
+    bucket: ${R2_BUCKET:hotel-booking-system}
+    # Nombre del bucket donde se guardan los archivos
+    region: ${R2_REGION:auto}
+    # Región del bucket (por defecto "auto")
+    public-url: ${R2_PUBLIC_URL:https://pub-4ecfdd3772564acea4003eb7f4f64d83.r2.dev}
+    # URL pública para acceder a archivos del bucket
+
+# Ejemplo para después de la configuración del CORS
+app:
+  cors:
+    allowed-origins: 
+#           - ${FRONTEND_PRODUCCION_URL:https://mi-frontend.vercel.app}
+          - ${FRONTEND_LOCAL_URL:http://localhost:5173}
+
+# # Después en Render agregar esto:
+# # app.cors.allowed-origins=https://mi-frontend.vercel.app
+
+server:
+  port: ${PORT:8080}
+  # Puerto donde se levantará la app
+  # Puede ser configurado por variable de entorno PORT
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    # Ruta donde SpringDoc genera la documentación OpenAPI
+  swagger-ui:
+    path: /swagger-ui.html
+    # Ruta donde se accede a la interfaz web de Swagger UI
+    enabled: ${SWAGGER_ENABLED:true}
+    # Permite habilitar o deshabilitar Swagger UI mediante variable de entorno

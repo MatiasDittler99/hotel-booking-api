@@ -1,0 +1,25 @@
+services:
+  hotel-api:
+    build: .
+    # Construye la imagen desde el Dockerfile en el directorio actual
+    container_name: hotel_booking_api
+    # Nombre del contenedor de la API
+    ports:
+      - "8080:8080"
+    # Expone el puerto de la aplicación; puede ser configurado por variable PORT
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      # Perfil activo de Spring Boot (local, test, prod, etc.)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://aws-0-us-west-2.pooler.supabase.com:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres.hysxgnyburidbscgxnuz
+      SPRING_DATASOURCE_PASSWORD: MatiasDittler_1999
+      # Variables necesarias para conectarse a PostgreSQL en Supabase
+      R2_ENDPOINT: ${R2_ENDPOINT}
+      R2_ACCESS_KEY: ${R2_ACCESS_KEY}
+      R2_SECRET_KEY: ${R2_SECRET_KEY}
+      R2_BUCKET: ${R2_BUCKET}
+      R2_REGION: ${R2_REGION}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL}
+      # Variables de configuración del almacenamiento R2 (Cloudflare)
+
+    restart: unless-stopped

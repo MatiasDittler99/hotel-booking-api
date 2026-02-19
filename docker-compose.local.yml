@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    # Imagen oficial de PostgreSQL 15 en versión Alpine (más ligera)
+    container_name: hotel_booking_postgres
+    # Nombre que tendrá el contenedor
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      # Nombre de la base de datos (puede ser sobreescrito por variable de entorno)
+      POSTGRES_USER: ${POSTGRES_USER}
+      # Usuario de la base de datos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Contraseña del usuario
+    ports:
+      - "5432:5432"
+      # Mapea el puerto 5432 del contenedor al host (para conexiones externas)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Volumen persistente para que los datos de PostgreSQL no se pierdan al reiniciar
+    restart: unless-stopped
+    # Reinicia el contenedor automáticamente salvo que se detenga manualmente
+
+  hotel-api:
+    build: .
+    # Construye la imagen desde el Dockerfile en el directorio actual
+    container_name: hotel_booking_api
+    # Nombre del contenedor de la API
+    ports:
+      - "${PORT:-8080}:8080"
+      # Expone el puerto de la aplicación; puede ser configurado por variable PORT
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      # Perfil activo de Spring Boot (local, test, prod, etc.)
+      POSTGRES_HOST: postgres
+      # Host de la base de datos (apunta al servicio postgres)
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Variables necesarias para conectarse a PostgreSQL
+      PORT: ${PORT:-8080}
+      # Puerto de la aplicación dentro del contenedor
+      R2_ENDPOINT: ${R2_ENDPOINT}
+      R2_ACCESS_KEY: ${R2_ACCESS_KEY}
+      R2_SECRET_KEY: ${R2_SECRET_KEY}
+      R2_BUCKET: ${R2_BUCKET}
+      R2_REGION: ${R2_REGION}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL}
+      # Variables de configuración del almacenamiento R2 (Cloudflare)
+    depends_on:
+      - postgres
+      # Asegura que el contenedor de la API no se inicie hasta que postgres esté listo
+    restart: unless-stopped
+    # Reinicia automáticamente el contenedor salvo que se detenga manualmente
+
+volumes:
+  postgres_data:
+  # Volumen persistente para la base de datos PostgreSQL

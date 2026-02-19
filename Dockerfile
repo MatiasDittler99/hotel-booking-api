@@ -57,7 +57,8 @@ COPY --from=build /app/target/hotel-booking-api-0.0.1-SNAPSHOT.jar app.jar
 # ------------------------
 # Variables de entorno por defecto (pueden sobrescribirse)
 # ------------------------
-ENV SPRING_PROFILES_ACTIVE=local
+# En produccion
+ENV SPRING_PROFILES_ACTIVE=prod
 # Perfil de Spring Boot por defecto
 ENV PORT=8080
 # Puerto por defecto de la aplicación
