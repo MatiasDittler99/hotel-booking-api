@@ -1,0 +1,6 @@
+server:
+  address: 0.0.0.0
+  # Hace que la app escuche en todas las interfaces de red del contenedor/servidor.
+  port: ${PORT:8080}
+  # Puerto donde se levantará la app
+  # Puede ser configurado por variable de entorno PORT
