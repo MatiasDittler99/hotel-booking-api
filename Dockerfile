@@ -7,32 +7,34 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 # Directorio de trabajo dentro del contenedor
 
+# Instalar utilidades necesarias
+RUN apk add --no-cache dos2unix
+
 # ------------------------
 # Copiamos archivos necesarios para Maven Wrapper
 # ------------------------
-COPY pom.xml mvnw ./
 # Copia el pom.xml y el script mvnw (Maven Wrapper)
-COPY .mvn/ .mvn/
 # Copia la carpeta .mvn que contiene configuración del wrapper
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
 
 # ------------------------
 # Permiso de ejecución para mvnw (recomendado en Linux/Alpine)
 # ------------------------
-RUN apk add --no-cache dos2unix
-RUN dos2unix mvnw
-RUN chmod +x mvnw
+RUN dos2unix mvnw && chmod +x mvnw
 # Asegura que mvnw se pueda ejecutar dentro del contenedor
 
 # ------------------------
 # Pre-descargamos dependencias para acelerar el build
 # ------------------------
-RUN ./mvnw dependency:go-offline -B
+RUN ./mvnw -B -q -DskipTests dependency:go-offline
 # Descarga todas las dependencias declaradas en pom.xml sin compilar aún
 
 # ------------------------
 # Copiamos todo el proyecto
 # ------------------------
-COPY . .
+COPY src src
 # Copia todos los archivos del proyecto al contenedor
 
 # ------------------------
