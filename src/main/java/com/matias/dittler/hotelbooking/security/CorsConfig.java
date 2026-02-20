@@ -28,10 +28,11 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
                         .allowedOrigins("*") // Permite cualquier origen (desarrollo). En producción se recomienda especificar dominios
                         // Ejemplo de cómo usar dominios específicos en producción:
-                        // .allowedOrigins(
+                        .allowedOrigins(
                         //     "https://hotel-booking-frontend.vercel.app",
                         //     "https://hotel-booking.netlify.app"
-                        // )
+                            "http://localhost:5173"
+                        )
                         .allowedHeaders("*"); // Permite cualquier cabecera HTTP
             }
         };

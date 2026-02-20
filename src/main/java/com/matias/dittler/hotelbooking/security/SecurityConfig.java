@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 // Configuración de autorización de endpoints
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/swagger-ui/index.html", "/webjars/**").permitAll() // Endpoints públicos
                         .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll() // Endpoint publicos
                         .anyRequest().authenticated() // Todos los demás requieren autenticación
