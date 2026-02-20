@@ -18,6 +18,8 @@ COPY .mvn/ .mvn/
 # ------------------------
 # Permiso de ejecución para mvnw (recomendado en Linux/Alpine)
 # ------------------------
+RUN apk add --no-cache dos2unix
+RUN dos2unix mvnw
 RUN chmod +x mvnw
 # Asegura que mvnw se pueda ejecutar dentro del contenedor
 
