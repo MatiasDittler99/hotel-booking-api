@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,60 +19,74 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Configuración de seguridad de Spring Security para la aplicación.
- * Incluye:
- * - CORS
- * - Desactivación de CSRF
- * - Configuración de endpoints públicos y protegidos
- * - Autenticación basada en JWT
- * - Gestión de contraseñas con BCrypt
+ * Configuración principal de seguridad de Spring Security para la aplicación.
+ *
+ * Funciones principales:
+ *  - Configura CORS y desactiva CSRF (no necesario con JWT).
+ *  - Define endpoints públicos y protegidos según roles (ADMIN, USER).
+ *  - Integra autenticación basada en JWT mediante JWTAuthFilter.
+ *  - Gestiona contraseñas usando BCryptPasswordEncoder.
+ *  - Configura la política de sesión como stateless para JWT.
+ *
+ * Anotaciones:
+ *  - @Configuration: Marca la clase como bean de configuración de Spring.
+ *  - @EnableWebSecurity: Activa la seguridad web de Spring.
+ *  - @EnableMethodSecurity: Permite usar anotaciones como @PreAuthorize en métodos.
  */
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // Permite usar anotaciones como @PreAuthorize en métodos
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService; // Servicio que carga datos de usuario
+    private CustomUserDetailsService customUserDetailsService; // Servicio para cargar datos de usuario
 
     @Autowired
     private JWTAuthFilter jwtAuthFilter; // Filtro que valida tokens JWT
 
     /**
-     * Configuración de la cadena de filtros de seguridad.
+     * Configura la cadena de filtros de Spring Security.
+     *
+     * Flujo principal:
+     *  1. Desactiva CSRF y habilita CORS.
+     *  2. Define autorización de endpoints según roles y permisos.
+     *  3. Configura sesión sin estado (stateless).
+     *  4. Integra AuthenticationProvider personalizado y filtro JWT.
+     *
      * @param httpSecurity Objeto HttpSecurity de Spring Security
      * @return SecurityFilterChain configurado
-     * @throws Exception
+     * @throws Exception en caso de error en la configuración de seguridad
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // Desactiva CSRF (no es necesario con JWT)
-                .csrf(csrf-> csrf.disable())
-                // Habilita CORS con la configuración por defecto
-                .cors(Customizer.withDefaults())
-                // Configuración de autorización de endpoints
+                .csrf(csrf -> csrf.disable()) // CSRF no necesario con JWT
+                .cors(Customizer.withDefaults()) // Habilita CORS con configuración por defecto
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/rooms/all-available-rooms").permitAll()
-                        .requestMatchers("/rooms/available-rooms-by-date-and-type").permitAll()
-                        .requestMatchers("/rooms/types").permitAll()
-                        .requestMatchers("/rooms/all").permitAll()
-                        .requestMatchers("/rooms/room-by-id/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/swagger-ui/index.html", "/webjars/**").permitAll() // Endpoints públicos
-                        // .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll() // Endpoint publicos
-                        // Rooms - ADMIN only
+                        // Endpoints públicos
+                        .requestMatchers("/", "/auth/**").permitAll()
+                        .requestMatchers(
+                                "/rooms/all-available-rooms",
+                                "/rooms/available-rooms-by-date-and-type",
+                                "/rooms/types",
+                                "/rooms/all",
+                                "/rooms/room-by-id/**").permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/index.html",
+                                "/webjars/**").permitAll()
+                        // Endpoints de habitaciones (ADMIN)
                         .requestMatchers("/rooms/add").hasAuthority("ADMIN")
                         .requestMatchers("/rooms/update/**").hasAuthority("ADMIN")
                         .requestMatchers("/rooms/delete/**").hasAuthority("ADMIN")
-                         // Bookings
-                        .requestMatchers("/bookings/book-room/**").hasAnyAuthority("USER","ADMIN")
-                        .requestMatchers("/bookings/cancel/**").hasAnyAuthority("USER","ADMIN")
+                        // Endpoints de reservas
+                        .requestMatchers("/bookings/book-room/**").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers("/bookings/cancel/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/bookings/all").hasAuthority("ADMIN")
                         .requestMatchers("/bookings/get-by-confirmation-code/**").authenticated()
-
-                        // Users
+                        // Endpoints de usuarios
                         .requestMatchers("/users/all").hasAuthority("ADMIN")
                         .requestMatchers("/users/get-logged-in-profile-info").authenticated()
                         .requestMatchers("/users/get-by-id/**").authenticated()
@@ -82,33 +94,37 @@ public class SecurityConfig {
                         .requestMatchers("/users/delete/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated() // Todos los demás requieren autenticación
                 )
-                // Configuración de sesiones: sin estado, ya que usamos JWT
+                // Configura la política de sesión como stateless (JWT)
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Configura el proveedor de autenticación
+                // Configura proveedor de autenticación con UserDetailsService y PasswordEncoder
                 .authenticationProvider(authenticationProvider())
-                // Agrega nuestro filtro JWT antes del filtro de login de Spring Security
+                // Agrega filtro JWT antes del UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
 
     /**
-     * Configura el proveedor de autenticación DAO con nuestro UserDetailsService y codificador de contraseñas.
-     * @return AuthenticationProvider
+     * Proveedor de autenticación DAO personalizado.
+     *
+     * Permite:
+     *  - Cargar usuarios desde CustomUserDetailsService.
+     *  - Validar contraseñas usando BCryptPasswordEncoder.
+     *
+     * @return AuthenticationProvider configurado
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        // Se indica cómo se cargan los usuarios
         daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
-        // Se indica cómo se codifican y verifican las contraseñas
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
 
     /**
-     * Bean para codificar las contraseñas usando BCrypt.
-     * @return PasswordEncoder
+     * Bean para codificación de contraseñas usando BCrypt.
+     *
+     * @return PasswordEncoder que aplica hash BCrypt
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -117,14 +133,15 @@ public class SecurityConfig {
 
     /**
      * Bean que expone el AuthenticationManager de Spring Security.
-     * Es útil para realizar autenticaciones manuales, por ejemplo en el login.
+     *
+     * Útil para autenticaciones manuales, por ejemplo en endpoints de login.
+     *
      * @param authenticationConfiguration Configuración de autenticación de Spring
-     * @return AuthenticationManager
-     * @throws Exception
+     * @return AuthenticationManager configurado
+     * @throws Exception en caso de error al obtener el AuthenticationManager
      */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 }

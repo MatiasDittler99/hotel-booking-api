@@ -1,0 +1,35 @@
+# Ignorar carpetas de dependencias y compilación locales
+target/
+build/
+out/
+
+# Ignorar configuraciones de IDEs
+*.iml
+.idea/
+.vscode/
+*.classpath
+*.project
+*.settings/
+
+# Ignorar archivos de sistema y logs
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de Git
+.git
+.gitignore
+
+# Ignorar archivos de entorno locales
+.env
+.env.local
+
+# Ignorar Maven Wrapper temporal
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Ignorar otros archivos que no son necesarios para el contenedor
+README.md
+docs/
