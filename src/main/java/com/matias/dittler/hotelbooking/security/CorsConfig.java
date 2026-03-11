@@ -26,14 +26,15 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Aplica CORS a todos los endpoints
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
-                        .allowedOrigins("*") // Permite cualquier origen (desarrollo). En producción se recomienda especificar dominios
+                        .allowedOrigins("http://localhost:5173") // Permite cualquier origen (desarrollo). En producción se recomienda especificar dominios
                         // Ejemplo de cómo usar dominios específicos en producción:
-                        .allowedOrigins(
-                        //     "https://hotel-booking-frontend.vercel.app",
-                        //     "https://hotel-booking.netlify.app"
-                            "http://localhost:5173"
-                        )
-                        .allowedHeaders("*"); // Permite cualquier cabecera HTTP
+                        // .allowedOrigins(
+                        // //     "https://hotel-booking-frontend.vercel.app",
+                        // //     "https://hotel-booking.netlify.app"
+                        //     // "http://localhost:5173"
+                        // )
+                        .allowedHeaders("*") // Permite cualquier cabecera HTTP
+                        .allowCredentials(true); // Permite aceptar las credenciales de JWT
             }
         };
     }
