@@ -55,15 +55,34 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        String method = request.getMethod();
 
-        return path.startsWith("/v3/api-docs")
-                || path.startsWith("/rooms")
-                || path.startsWith("/bookings")
-                || path.startsWith("/auth")
-                || path.startsWith("/swagger-ui")
-                || path.startsWith("/swagger-ui.html")
-                || path.startsWith("/swagger-ui/index.html")
-                || path.startsWith("/webjars");
+        // OpenAPI y Swagger públicos
+        if (path.startsWith("/v3/api-docs")
+            || path.startsWith("/swagger-ui")
+            || path.startsWith("/swagger-ui.html")
+            || path.startsWith("/swagger-ui/index.html")
+            || path.startsWith("/webjars")) {
+            return true;
+        }
+
+        // Endpoints públicos
+        if (path.startsWith("/auth")) {
+            return true; // login y register
+        }
+
+        // GET públicos de habitaciones y reservas
+        if (method.equals("GET") &&
+                (path.startsWith("/rooms/all-available-rooms")
+                || path.startsWith("/rooms/available-rooms-by-date-and-type")
+                || path.startsWith("/rooms/types")
+                || path.startsWith("/rooms/all")
+                || path.startsWith("/rooms/room-by-id"))) {
+            return true;
+        }
+
+        // Si no coincide con los anteriores, debe pasar por el filtro JWT
+        return false;
     }
 
     /**

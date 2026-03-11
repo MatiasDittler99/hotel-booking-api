@@ -45,7 +45,7 @@ public class JWTUtils {
         Map<String, Object> claims = new HashMap<>(); 
 
         String role = userDetails.getAuthorities().stream().findFirst().map(auth -> auth.getAuthority()).orElse("USER");
-        claims.put("role", role);
+        claims.put("role", "ROLE_" + role);
         
         return Jwts.builder()
                 .setClaims(claims)

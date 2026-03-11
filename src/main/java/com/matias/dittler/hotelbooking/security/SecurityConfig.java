@@ -50,14 +50,36 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // Desactiva CSRF (no es necesario con JWT)
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf-> csrf.disable())
                 // Habilita CORS con la configuración por defecto
                 .cors(Customizer.withDefaults())
                 // Configuración de autorización de endpoints
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/rooms/all-available-rooms").permitAll()
+                        .requestMatchers("/rooms/available-rooms-by-date-and-type").permitAll()
+                        .requestMatchers("/rooms/types").permitAll()
+                        .requestMatchers("/rooms/all").permitAll()
+                        .requestMatchers("/rooms/room-by-id/**").permitAll()
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/swagger-ui/index.html", "/webjars/**").permitAll() // Endpoints públicos
-                        .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll() // Endpoint publicos
+                        // .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll() // Endpoint publicos
+                        // Rooms - ADMIN only
+                        .requestMatchers("/rooms/add").hasRole("ADMIN")
+                        .requestMatchers("/rooms/update/**").hasRole("ADMIN")
+                        .requestMatchers("/rooms/delete/**").hasRole("ADMIN")
+                         // Bookings
+                        .requestMatchers("/bookings/book-room/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/bookings/cancel/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/bookings/all").hasRole("ADMIN")
+                        .requestMatchers("/bookings/get-by-confirmation-code/**").authenticated()
+
+                        // Users
+                        .requestMatchers("/users/all").hasRole("ADMIN")
+                        .requestMatchers("/users/get-logged-in-profile-info").authenticated()
+                        .requestMatchers("/users/get-by-id/**").authenticated()
+                        .requestMatchers("/users/get-user-bookings/**").authenticated()
+                        .requestMatchers("/users/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // Todos los demás requieren autenticación
                 )
                 // Configuración de sesiones: sin estado, ya que usamos JWT
