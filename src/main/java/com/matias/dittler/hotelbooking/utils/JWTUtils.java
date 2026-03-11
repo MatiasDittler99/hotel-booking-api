@@ -42,10 +42,13 @@ public class JWTUtils {
      * @return Token JWT firmado
      */
     public String generateToken(UserDetails userDetails){
-        Map<String, object> claims = new HashMap<>(); 
+        Map<String, Object> claims = new HashMap<>(); 
 
-        claims.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
+        String role = userDetails.getAuthorities().stream().findFirst().map(auth -> auth.getAuthority()).orElse("USER");
+        claims.put("role", role);
+        
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())           // Usuario
                 .setIssuedAt(new Date(System.currentTimeMillis())) // Fecha de emisión
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // Expiración

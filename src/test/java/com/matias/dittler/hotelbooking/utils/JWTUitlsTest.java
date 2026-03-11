@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * Tests unitarios para JWTUtils.
@@ -25,7 +27,7 @@ class JWTUtilsTest {
         userDetails = new User(
                 "testuser",
                 "password",
-                Collections.emptyList()
+                List.of(new SimpleGrantedAuthority("USER"))
         );
     }
 
@@ -74,7 +76,7 @@ class JWTUtilsTest {
         UserDetails otherUser = new User(
                 "otheruser",
                 "password",
-                Collections.emptyList()
+                List.of(new SimpleGrantedAuthority("USER"))
         );
 
         boolean isValid = jwtUtils.isValidToken(token, otherUser);

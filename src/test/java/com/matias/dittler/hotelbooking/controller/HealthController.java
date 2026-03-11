@@ -1,62 +1,91 @@
 package com.matias.dittler.hotelbooking.controller;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.matias.dittler.hotelbooking.service.R2StorageService;
+import com.matias.dittler.hotelbooking.service.implementation.BookingService;
+import com.matias.dittler.hotelbooking.service.implementation.RoomService;
+import com.matias.dittler.hotelbooking.utils.JWTUtils;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Pruebas de integración para el controlador de verificación de estado (HealthController).
- *
- * Este test levanta el contexto completo de Spring Boot para simular el comportamiento real
- * de la aplicación en ejecución. Se utiliza MockMvc para realizar peticiones HTTP sin necesidad
- * de iniciar un servidor embebido.
- *
- * La configuración de seguridad se desactiva explícitamente para evitar que filtros de autenticación
- * interfieran con la prueba del endpoint público de salud del sistema.
+ * 🔹 HealthControllerTest
+ * ---------------------------------------------------------------------------
+ * Clase de tests enfocada en el endpoint de salud de la API ("/").
+ * Responsabilidades:
+ * - Verificar que el endpoint de health check responda correctamente.
+ * - Usar @SpringBootTest para levantar el contexto completo de Spring.
+ * - Deshabilitar filtros de seguridad con @AutoConfigureMockMvc(addFilters = false)
+ *   para no depender de JWT u otros filtros de seguridad en este test.
  */
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@TestPropertySource(properties = {
-        // Se excluye la auto-configuración de seguridad para simplificar el contexto de pruebas
-        "spring.autoconfigure.exclude=" +
-        "org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration," +
-        "org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration"
-})
 class HealthControllerTest {
 
     /**
-     * MockMvc permite simular peticiones HTTP y validar respuestas del controlador
-     * sin desplegar la aplicación en un servidor real.
+     * 🔹 MockMvc
+     * -----------------------------------------------------------------------
+     * Permite simular peticiones HTTP a los endpoints sin levantar un servidor real.
      */
     @Autowired
     private MockMvc mockMvc;
 
     /**
-     * Verifica que el endpoint raíz responda correctamente con estado HTTP 200
-     * y devuelva la estructura JSON esperada.
-     *
-     * Escenario validado:
-     * - El servicio está activo
-     * - La API responde correctamente
-     * - El formato de respuesta es consistente
+     * 🔹 MockBean: JWTUtils
+     * -----------------------------------------------------------------------
+     * Mockeamos la utilidad JWT para evitar validaciones de token en este test,
+     * ya que el endpoint de health check no requiere autenticación.
+     */
+    @MockBean
+    private JWTUtils jwtUtils;
+
+    /**
+     * 🔹 MockBean: BookingService
+     * -----------------------------------------------------------------------
+     * Mockeamos BookingService para evitar llamadas reales a la lógica de reservas.
+     */
+    @MockBean
+    private BookingService bookingService;
+
+    /**
+     * 🔹 MockBean: RoomService
+     * -----------------------------------------------------------------------
+     * Mockeamos RoomService para evitar llamadas reales a la lógica de habitaciones.
+     */
+    @MockBean
+    private RoomService roomService;
+
+    /**
+     * 🔹 MockBean: R2StorageService
+     * -----------------------------------------------------------------------
+     * Mockeamos el servicio de almacenamiento para no depender de recursos externos.
+     */
+    @MockBean
+    private R2StorageService r2StorageService;
+
+    /**
+     * 🔹 Test: Health check endpoint
+     * -----------------------------------------------------------------------
+     * Verifica que el endpoint "/" responda correctamente con:
+     * - HTTP status 200 OK
+     * - JSON con clave "status" = "OK"
+     * - JSON con clave "service" = "Hotel Booking API"
+     * 
+     * Esto asegura que la API está funcionando y lista para recibir requests.
      */
     @Test
     void deberiaResponderEstadoOK() throws Exception {
-
-        // Se ejecuta una petición GET al endpoint raíz "/"
         mockMvc.perform(get("/"))
-
-                // Se valida que la respuesta HTTP sea 200 OK
-                .andExpect(status().isOk())
-
-                // Se valida el contenido del JSON devuelto por el controlador
-                .andExpect(jsonPath("$.status").value("OK"))
-                .andExpect(jsonPath("$.service").value("Hotel Booking API"));
+               .andExpect(status().isOk()) // HTTP 200 OK
+               .andExpect(jsonPath("$.status").value("OK")) // Clave status correcta
+               .andExpect(jsonPath("$.service").value("Hotel Booking API")); // Nombre del servicio
     }
 }

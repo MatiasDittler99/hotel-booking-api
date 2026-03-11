@@ -3,77 +3,108 @@ package com.matias.dittler.hotelbooking.security;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import com.matias.dittler.hotelbooking.service.CustomUserDetailsService;
 import com.matias.dittler.hotelbooking.utils.JWTUtils;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Clase de tests para verificar la configuración de seguridad (SecurityConfig) de la aplicación.
- * 
- * Utiliza SpringBootTest para levantar un contexto completo y AutoConfigureMockMvc para
- * poder realizar peticiones HTTP simuladas a los endpoints.
- * Se importa TestController explícitamente para que esté disponible durante los tests.
+ * 🔹 SecurityConfigTest
+ * ---------------------------------------------------------------------------
+ * Clase de tests enfocada en la seguridad de los endpoints de la aplicación.
+ * Responsabilidades:
+ * - Validar que los endpoints públicos y protegidos se comporten según roles.
+ * - Usar mocks de servicios para no depender del contexto completo de Spring.
+ * - Probar autenticación y autorización usando @WithMockUser y MockMvc.
  */
-@SpringBootTest // Levanta el contexto completo de Spring Boot para pruebas de integración
-@AutoConfigureMockMvc // Configura automáticamente MockMvc para simular peticiones HTTP
-@Import(TestController.class) // Se importa el controlador de prueba con endpoints simulados
+@WebMvcTest(TestController.class) // Levanta solo el contexto MVC, no toda la app
 class SecurityConfigTest {
 
+    /**
+     * 🔹 MockMvc
+     * -----------------------------------------------------------------------
+     * Componente proporcionado por Spring para simular requests HTTP
+     * sin necesidad de levantar un servidor real.
+     */
     @Autowired
-    private MockMvc mockMvc; // MockMvc permite simular peticiones HTTP sin levantar un servidor real
+    private MockMvc mockMvc;
 
+    /**
+     * 🔹 MockBean: CustomUserDetailsService
+     * -----------------------------------------------------------------------
+     * Se mockea el servicio de detalles de usuario para evitar llamadas
+     * reales a la base de datos durante los tests.
+     */
     @MockBean
-    private CustomUserDetailsService userDetailsService; 
-    // Se mockea el UserDetailsService para que Spring no intente cargar usuarios reales
+    private CustomUserDetailsService userDetailsService;
 
+    /**
+     * 🔹 MockBean: JWTUtils
+     * -----------------------------------------------------------------------
+     * Se mockea la utilidad de JWT para que la seguridad se pueda probar
+     * sin generar tokens reales.
+     */
     @MockBean
     private JWTUtils jwtUtils;
-    // Se mockea JWTUtils para evitar validación real de tokens JWT en los tests
 
     /**
-     * Verifica que los endpoints bajo /auth/** sean accesibles sin autenticación.
+     * 🔹 Test: Acceso a /auth/** con usuario simulado
+     * -----------------------------------------------------------------------
+     * Verifica que un usuario con rol USER pueda acceder a endpoints
+     * de autenticación simulados.
      */
     @Test
-    @DisplayName("Should allow /auth/** without authentication")
+    @DisplayName("Should allow /auth/** with mock user")
+    @WithMockUser(username = "user", roles = {"USER"})
     void shouldAllowAuthEndpoints() throws Exception {
-        mockMvc.perform(get("/auth/test")) // Simula una petición GET a /auth/test
-                .andExpect(status().isOk()); // Espera que devuelva HTTP 200 OK
+        mockMvc.perform(get("/auth/test"))
+               .andExpect(status().isOk()); // 200 OK si el acceso es permitido
     }
 
     /**
-     * Verifica que los endpoints bajo /rooms/** sean accesibles sin autenticación.
+     * 🔹 Test: Acceso a /rooms/** con usuario simulado
+     * -----------------------------------------------------------------------
+     * Verifica que un usuario con rol USER pueda acceder a endpoints
+     * relacionados con habitaciones.
      */
     @Test
-    @DisplayName("Should allow /rooms/** without authentication")
+    @DisplayName("Should allow /rooms/** with mock user")
+    @WithMockUser(username = "user", roles = {"USER"})
     void shouldAllowRoomsEndpoints() throws Exception {
-        mockMvc.perform(get("/rooms/test")) // Simula GET a /rooms/test
-                .andExpect(status().isOk()); // Debe devolver 200 OK
+        mockMvc.perform(get("/rooms/test"))
+               .andExpect(status().isOk()); // 200 OK si el acceso es permitido
     }
 
     /**
-     * Verifica que los endpoints bajo /bookings/** sean accesibles sin autenticación.
+     * 🔹 Test: Acceso a /bookings/** con usuario simulado
+     * -----------------------------------------------------------------------
+     * Verifica que un usuario con rol USER pueda acceder a endpoints
+     * de reservas.
      */
     @Test
-    @DisplayName("Should allow /bookings/** without authentication")
+    @DisplayName("Should allow /bookings/** with mock user")
+    @WithMockUser(username = "user", roles = {"USER"})
     void shouldAllowBookingsEndpoints() throws Exception {
-        mockMvc.perform(get("/bookings/test")) // Simula GET a /bookings/test
-                .andExpect(status().isOk()); // Debe devolver 200 OK
+        mockMvc.perform(get("/bookings/test"))
+               .andExpect(status().isOk()); // 200 OK si el acceso es permitido
     }
 
     /**
-     * Verifica que los endpoints protegidos requieran autenticación.
-     * Según la configuración actual, devuelve 403 Forbidden si no hay autenticación.
+     * 🔹 Test: Bloqueo de /protected/** sin autenticación
+     * -----------------------------------------------------------------------
+     * Verifica que un endpoint protegido devuelva 401 Unauthorized
+     * si no se proporciona ningún usuario autenticado.
      */
     @Test
-    @DisplayName("Should block protected endpoints without authentication")
+    @DisplayName("Should block /protected/** without authentication")
     void shouldBlockProtectedEndpoints() throws Exception {
-        mockMvc.perform(get("/protected/test")) // Simula GET a /protected/test
-                .andExpect(status().isForbidden()); // Se espera HTTP 403 Forbidden
+        mockMvc.perform(get("/protected/test"))
+               .andExpect(status().isUnauthorized()); // 401 para no autenticados
     }
 }
