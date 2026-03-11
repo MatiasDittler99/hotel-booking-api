@@ -65,21 +65,21 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html", "/swagger-ui/index.html", "/webjars/**").permitAll() // Endpoints públicos
                         // .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll() // Endpoint publicos
                         // Rooms - ADMIN only
-                        .requestMatchers("/rooms/add").hasRole("ADMIN")
-                        .requestMatchers("/rooms/update/**").hasRole("ADMIN")
-                        .requestMatchers("/rooms/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/rooms/add").hasAuthority("ADMIN")
+                        .requestMatchers("/rooms/update/**").hasAuthority("ADMIN")
+                        .requestMatchers("/rooms/delete/**").hasAuthority("ADMIN")
                          // Bookings
-                        .requestMatchers("/bookings/book-room/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/bookings/cancel/**").hasAnyRole("USER","ADMIN")
-                        .requestMatchers("/bookings/all").hasRole("ADMIN")
+                        .requestMatchers("/bookings/book-room/**").hasAnyAuthority("USER","ADMIN")
+                        .requestMatchers("/bookings/cancel/**").hasAnyAuthority("USER","ADMIN")
+                        .requestMatchers("/bookings/all").hasAuthority("ADMIN")
                         .requestMatchers("/bookings/get-by-confirmation-code/**").authenticated()
 
                         // Users
-                        .requestMatchers("/users/all").hasRole("ADMIN")
+                        .requestMatchers("/users/all").hasAuthority("ADMIN")
                         .requestMatchers("/users/get-logged-in-profile-info").authenticated()
                         .requestMatchers("/users/get-by-id/**").authenticated()
                         .requestMatchers("/users/get-user-bookings/**").authenticated()
-                        .requestMatchers("/users/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/users/delete/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated() // Todos los demás requieren autenticación
                 )
                 // Configuración de sesiones: sin estado, ya que usamos JWT
