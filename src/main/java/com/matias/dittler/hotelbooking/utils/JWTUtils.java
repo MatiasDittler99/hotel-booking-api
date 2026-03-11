@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Clase utilitaria para generar y validar tokens JWT.
@@ -40,6 +42,9 @@ public class JWTUtils {
      * @return Token JWT firmado
      */
     public String generateToken(UserDetails userDetails){
+        Map<String, object> claims = new HashMap<>(); 
+
+        claims.put("role", userDetails.getAuthorities().iterator().next().getAuthority());
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())           // Usuario
                 .setIssuedAt(new Date(System.currentTimeMillis())) // Fecha de emisión
