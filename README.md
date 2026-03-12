@@ -22,6 +22,7 @@ API REST para un sistema de reservas de hotel desarrollada con Java y Spring Boo
 - Swagger / OpenAPI (agregar dependencia)
 - Postman
 - Render
+- Docker
 
 ---
 
