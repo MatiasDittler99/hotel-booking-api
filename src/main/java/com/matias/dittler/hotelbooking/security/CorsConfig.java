@@ -26,8 +26,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Aplica CORS a todos los endpoints
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
-                        .allowedOrigins("https://hotel-booking-web-three.vercel.app/") // Permite el origen del deploy del frontend
-                        .allowedOrigins("http://localhost:5173") // Permite cualquier origen (desarrollo).
+                        .allowedOrigins("https://hotel-booking-web-three.vercel.app", "http://localhost:5173") // Permite el origen del deploy del frontend y del localhost de desarrollo
                         .allowedHeaders("*") // Permite cualquier cabecera HTTP
                         .allowCredentials(true); // Permite aceptar las credenciales de JWT
             }
