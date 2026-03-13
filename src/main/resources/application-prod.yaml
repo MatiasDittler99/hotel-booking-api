@@ -60,11 +60,8 @@ storage:
 app:
   cors:
     allowed-origins: 
-#           - ${FRONTEND_PRODUCCION_URL:https://mi-frontend.vercel.app}
+          - ${FRONTEND_PRODUCCION_URL:https://hotel-booking-web-three.vercel.app/}
           - ${FRONTEND_LOCAL_URL:http://localhost:5173}
-
-# # Después en Render agregar esto:
-# # app.cors.allowed-origins=https://mi-frontend.vercel.app
 
 server:
   address: 0.0.0.0
