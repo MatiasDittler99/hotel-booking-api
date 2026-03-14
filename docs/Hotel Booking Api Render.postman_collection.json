@@ -1,0 +1,869 @@
+{
+  "info": {
+    "_postman_id": "6ae6e91e-fce3-4e66-8095-6f9a0ed03829",
+    "name": "Hotel Booking Api Render",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46171443"
+  },
+  "item": [
+    {
+      "name": "registerUser",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin\",\r\n    \"phoneNumber\": \"0123456789\",\r\n    \"name\": \"Administrador\",\r\n    \"role\": \"ADMIN\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://hotel-booking-api-aoih.onrender.com/auth/register",
+          "protocol": "https",
+          "host": [
+            "hotel-booking-api-aoih",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"admin\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://hotel-booking-api-aoih.onrender.com/auth/login",
+          "protocol": "https",
+          "host": [
+            "hotel-booking-api-aoih",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllUsers",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NzMxODIxNDYsImV4cCI6MTc3Mzc4Njk0Nn0.UEBTrrmaUXgOs2zoUoF5dWw-XxbYU3qP8i-pgktCF6E",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://hotel-booking-api-aoih.onrender.com/users/all",
+          "protocol": "https",
+          "host": [
+            "hotel-booking-api-aoih",
+            "onrender",
+            "com"
+          ],
+          "path": [
+            "users",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getUserById",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaXR0bGVyX21hdGlhc0BnbWFpbC5jb20iLCJpYXQiOjE3NzA4MDQ0OTMsImV4cCI6MTc3MDkwNTI5M30.259GnUGDNOxqmwYXfbSXutx2OIbCyA5RkVznaW2NA1Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/get-by-id/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "get-by-id",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getLoggedInUsersInfo",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaXR0bGVyX21hdGlhc0BnbWFpbC5jb20iLCJpYXQiOjE3NzA4MDQ0OTMsImV4cCI6MTc3MDkwNTI5M30.259GnUGDNOxqmwYXfbSXutx2OIbCyA5RkVznaW2NA1Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/get-logged-in-profile-info",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "get-logged-in-profile-info"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getUserBookingHistory",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaXR0bGVyX21hdGlhc0BnbWFpbC5jb20iLCJpYXQiOjE3NzA4MDQ0OTMsImV4cCI6MTc3MDkwNTI5M30.259GnUGDNOxqmwYXfbSXutx2OIbCyA5RkVznaW2NA1Y",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/get-user-bookings/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "get-user-bookings",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deleteUser",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/delete/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "delete",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addRoom",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8081/rooms/add",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "rooms",
+            "add"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "allRoomTypes",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/types",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "types"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "allRooms",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/all",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getRoomById",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/room-by-id/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "room-by-id",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deleteRoomById",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/delete/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "delete",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateRoomById",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/queen_room_1.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Queen Updated",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "580",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Se actualizo",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/update/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "update",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "allAvailabeRooms",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4NzQ2NjksImV4cCI6MTc3MDk3NTQ2OX0.2dJNnyxVkLbRnZuKoVq8tYmgiFR9unGCKjIOKmkOs-g",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "photo",
+              "type": "file",
+              "uuid": "954cdebe-4fc6-4b02-b00b-ee254e5acacc",
+              "src": "/C:/Users/matia/OneDrive/Escritorio/suit_room_2.jpeg"
+            },
+            {
+              "key": "roomType",
+              "value": "Suite",
+              "type": "text",
+              "uuid": "9f6ce122-bb3f-482b-b4ea-518dd553de8e"
+            },
+            {
+              "key": "roomPrice",
+              "value": "950",
+              "type": "text",
+              "uuid": "2a875e9a-f054-4cd0-8715-c50924428380"
+            },
+            {
+              "key": "roomDescription",
+              "value": "Una hermosa suite grande 2",
+              "type": "text",
+              "uuid": "589d61d6-23ac-4d77-92fd-6c4d926986eb"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/rooms/all-available-rooms",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "all-available-rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "allAvailableRoomsByDateAndType",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/rooms/available-rooms-by-date-and-type?checkInDate=2026-06-07&checkOutDate=2026-07-09&roomType=Queen",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "rooms",
+            "available-rooms-by-date-and-type"
+          ],
+          "query": [
+            {
+              "key": "checkInDate",
+              "value": "2026-06-07"
+            },
+            {
+              "key": "checkOutDate",
+              "value": "2026-07-09"
+            },
+            {
+              "key": "roomType",
+              "value": "Queen"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "bookARoom",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4ODQzMTMsImV4cCI6MTc3MDk4NTExM30.QKjLVybmMNmC-gSE4ky31Du4McOdY0sp4BCSuu8_I4s",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"checkInDate\":\"2026-02-12\",\r\n    \"checkOutDate\":\"2026-06-05\",\r\n    \"numOfAdults\":\"3\",\r\n    \"numOfChildren\":\"2\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/bookings/book-room/2/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "bookings",
+            "book-room",
+            "2",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAllBookings",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4ODQzMTMsImV4cCI6MTc3MDk4NTExM30.QKjLVybmMNmC-gSE4ky31Du4McOdY0sp4BCSuu8_I4s",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/bookings/all",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "bookings",
+            "all"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingConfirmation",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4ODQzMTMsImV4cCI6MTc3MDk4NTExM30.QKjLVybmMNmC-gSE4ky31Du4McOdY0sp4BCSuu8_I4s",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/bookings/get-by-confirmation-code/G6WD7IVV2P",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "bookings",
+            "get-by-confirmation-code",
+            "G6WD7IVV2P"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getBookingByUserId",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4ODQzMTMsImV4cCI6MTc3MDk4NTExM30.QKjLVybmMNmC-gSE4ky31Du4McOdY0sp4BCSuu8_I4s",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/get-user-bookings/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "get-user-bookings",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cancelBookingById",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3NzA4ODQzMTMsImV4cCI6MTc3MDk4NTExM30.QKjLVybmMNmC-gSE4ky31Du4McOdY0sp4BCSuu8_I4s",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/bookings/cancel/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "bookings",
+            "cancel",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "heathController",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
