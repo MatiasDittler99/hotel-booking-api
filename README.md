@@ -166,6 +166,68 @@ Campos principales:
 
 ---
 
+## 🎮 Controllers
+
+Los controllers exponen los endpoints REST de la API y manejan las peticiones HTTP del cliente.  
+Cada controller delega la lógica de negocio a la capa de servicios.
+
+### AuthController
+Gestiona la autenticación de usuarios.
+
+Responsabilidades:
+
+- Registro de usuarios
+- Inicio de sesión
+- Generación de tokens JWT
+
+---
+
+### UserController
+Gestiona la información de los usuarios del sistema.
+
+Responsabilidades:
+
+- Obtener información del usuario autenticado
+- Actualizar datos del perfil
+- Consultar reservas del usuario
+
+---
+
+### RoomController
+Gestiona las habitaciones del hotel.
+
+Responsabilidades:
+
+- Crear habitaciones
+- Actualizar habitaciones
+- Eliminar habitaciones
+- Listar habitaciones disponibles
+- Obtener detalles de una habitación
+
+---
+
+### BookingController
+Gestiona las reservas del hotel.
+
+Responsabilidades:
+
+- Crear reservas
+- Consultar reservas
+- Buscar reservas por código de confirmación
+- Cancelar reservas
+
+---
+
+### HealthController
+Permite verificar el estado de la API.
+
+Responsabilidades:
+
+- Endpoint para comprobar que la aplicación está funcionando correctamente
+- Utilizado para monitoreo, pruebas de disponibilidad y sistemas de despliegue
+
+---
+
 # 🔐 Autenticación
 
 La API utiliza **JWT (JSON Web Token)** para la autenticación.
